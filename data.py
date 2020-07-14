@@ -5,10 +5,15 @@ import os
 
 class ImageDataset(data.Dataset):
     
-    def __init__(self, root_dir, num_augments=2, transform=None):
+    def __init__(self, root_dir, num_augments=2, phase='train', transform=None):
         
         self.root_dir = root_dir
-        self.img_names = os.listdir(root_dir)
+        if phase == 'train':
+            self.img_names = os.listdir(root_dir)[::600]
+        elif phase == 'val':
+            self.img_names = os.listdir(root_dir)[1::600]
+        elif phase == 'test':
+            self.img_names = os.listdir(root_dir)[2::600]
         self.num_augments = num_augments
         self.transform = transform
         
@@ -16,17 +21,11 @@ class ImageDataset(data.Dataset):
         
         output = []
         img = Image.open(self.root_dir + '/' + self.img_names[index]).convert('RGB')
-        
-#        if self.transform is not None:
-#            img = self.transform(img)
-#            
-#        return img, index
             
         for i in range(self.num_augments):
             if self.transform is not None:
                 img_transform = self.transform(img)
                 
-#            img_transform = img_transform.permute(1,2,0)
             output.append(img_transform)
             
         output = torch.stack(output, axis=0)

@@ -3,7 +3,7 @@ import torchvision.transforms as transforms
 def augment_image():
     
     transforms_image = transforms.Compose([
-        transforms.RandomResizedCrop(224, scale=(0.25, 1.0), ratio=(0.75, 1.3333333333333333), interpolation=2),
+        transforms.RandomResizedCrop(224, scale=(0.5, 1.0), ratio=(0.75, 1.3333333333333333), interpolation=2),
         transforms.ColorJitter(brightness=0.25, contrast=0.25, hue=0.25, saturation=0.25),
         transforms.RandomHorizontalFlip(p=0.5),
 #        transforms.RandomRotation(90),
